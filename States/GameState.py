@@ -557,6 +557,15 @@ class GameState(State):
         suitOrder = [Suit.HEARTS, Suit.CLUBS, Suit.DIAMONDS, Suit.SPADES]         # Define the order of suits
         self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
 
+        if sort_by == "rank":
+            sorted_rank = []
+            for rank in suitOrder:
+
+        if sort_by == "suit":
+            sorted_suit = []
+
+
+
     def checkHoverCards(self):
         mousePos = pygame.mouse.get_pos()
         for card, rect in self.cards.items():
