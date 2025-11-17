@@ -10,4 +10,34 @@ from Cards.Card import Card, Rank
 #   and flags to determine if the hand is: "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind",
 #   "Two Pair", "One Pair", or "High Card". Return a string with the correct hand type at the end.
 def evaluate_hand(hand: list[Card]):
-    return "High Card" # If none of the above, it's High Card
+    suit_dict = {}
+    rank_dict = {}
+    for i in hand:
+        if i not in suit_dict:
+            suit_dict[i] = 1
+        else:
+            suit_dict[i] += 1
+
+    for i in hand:
+        if i not in rank_dict:
+            rank_dict[i] = 1
+
+        else:
+            rank_dict[i] += 1
+
+    if
+
+
+
+hand = [
+ Card(Rank.ACE, "hearts"),
+ Card(Rank.KING, "hearts"),
+ Card(Rank.QUEEN, "hearts"),
+ Card(Rank.JACK, "hearts"),
+ Card(Rank.TEN, "hearts")]
+
+
+
+
+
+
