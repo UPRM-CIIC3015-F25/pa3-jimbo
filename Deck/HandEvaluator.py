@@ -12,7 +12,7 @@ from Cards.Card import Card, Rank
 def evaluate_hand(hand: list[Card]):
     suit_dict = {}
     rank_dict = {}
-    count = 0
+    count_for_straight = 1
     for i in hand:
         if i not in suit_dict:  # Adds suit to dictionary
             suit_dict[i] = 1
@@ -30,13 +30,28 @@ def evaluate_hand(hand: list[Card]):
 
 
     for i in suit_dict: #chacks for flush
-        if suit_dict[i] in ["hearts", "diamonds", "clubs", "spades"]:
-            count += 1
-
-        if count == 5:
+        if suit_dict[i] == 5:
             return "flush"
+
         else:
             pass
+
+    for e in rank_dict: #check straight
+
+        if rank_dict[e] != 1:
+            pass
+
+        elif count_for_straight == 5:
+            return "straight"
+
+        elif rank_dict[e] == 1:
+            count_for_straight += 1
+
+    for i in rank_dict:
+        if rank_dict[i] == 2:
+
+
+
 
 
 
