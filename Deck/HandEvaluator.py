@@ -19,15 +19,12 @@ def evaluate_hand(hand: list[Card]):
             suit_dict[i.suit] += 1
 
     for i in hand:  # adds rank a dictionary
-        if i.rank in [Rank.TWO, Rank.THREE, Rank.FOUR, Rank.FIVE, Rank.SIX, Rank.SEVEN,
-                      Rank.EIGHT, Rank.NINE, Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING,
-                      Rank.ACE]:
 
-            if i.rank not in rank_dict:
-                rank_dict[i.rank] = 1
+        if i.rank not in rank_dict:
+            rank_dict[i.rank] = 1
 
-            else:
-                rank_dict[i.rank] += 1
+        else:
+            rank_dict[i.rank] += 1
 
 
 
