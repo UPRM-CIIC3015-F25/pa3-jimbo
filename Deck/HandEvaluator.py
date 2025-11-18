@@ -12,48 +12,157 @@ from Cards.Card import Card, Rank
 def evaluate_hand(hand: list[Card]):
     suit_dict = {}
     rank_dict = {}
-    count_for_straight = 1
     for i in hand:
-        if i not in suit_dict:  # Adds suit to dictionary
-            suit_dict[i] = 1
-        else:
-            suit_dict[i] += 1
+        if i.suit in ["hearts", "diamonds", "clubs", "spades"]:
+            if i.suit not in suit_dict:  # Adds suit to dictionary
+                suit_dict[i.suit] = 1
+            else:
+                suit_dict[i.suit] += 1
 
-    for i in hand: # adds rank a dictionary
-        if i not in rank_dict:
-            rank_dict[i] = 1
+    for i in hand:  # adds rank a dictionary
+        if i.rank in [TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE]:
 
-        else:
-            rank_dict[i] += 1
+            if i.rank not in rank_dict:
+                rank_dict[i.rank] = 1
+
+            else:
+                rank_dict[i.rank] += 1
 
 
 
+    if straight_flush(suit_dict, rank_dict) == "straight flush":
+        return "straight flush"
+    if four_of_a_kind(rank_dict) == "four of a kind":
+        return "four of a kind"
+    if full_house(rank_dict) == "full house":
+        return "full house"
+    if flush(suit_dict) == "flush":
+        return "flush"
+    if straight(rank_dict) == "straight":
+        return "straight"
+    if three_of_a_kind(rank_dict) == "three of a kind":
+        return "three of a kind"
+    if two_pair(rank_dict) == "two pair":
+        return "two pair"
+    if one_pair(rank_dict) == "one pair":
+        return "one pair"
+    else:
+        return "high card"
 
-    for i in suit_dict: #chacks for flush
-        if suit_dict[i] == 5:
+def flush (suit): #def that takes a dict of suits to see if its a flush or not
+
+    for i in suit:  # chacks for flush
+        if suit[i] == 5:
             return "flush"
 
         else:
             pass
 
-    for e in rank_dict: #check straight
+def straight (rank):
+    new = []
+    new_if_high = []
 
-        if rank_dict[e] != 1:
-            pass
+    original = 0
+    count = 0
+    for e in rank:
+        new.append (e)
+#
+    new.sort()
+    if 14 in new:
+        for i in new:
+            new_if_high.append (i)
+        new_if_high.pop()
+        new_if_high.insert(0, 1)
+        new_if_high.sort()
 
-        elif count_for_straight == 5:
+    for i in new:
+        if count == 0:
+            count = i
+            original = i
+
+        elif i == count + 1:
+            count += 1
+
+    if count == original + 4:
+        return "straight"
+
+    else:
+        new_count = 0
+        new_original = 0
+
+        for i in new_if_high:
+            if new_count == 0:
+                new_count = i
+                new_original = i
+            elif i == new_count + 1:
+                new_count += 1
+
+        if new_count == new_original + 4:
             return "straight"
 
-        elif rank_dict[e] == 1:
-            count_for_straight += 1
+def two_pair (rank):
+    count = 0
+    for i in rank:
+        if rank[i] == 2:
+            count += 1
 
-    for i in rank_dict:
-        if rank_dict[i] == 2:
+    if count == 2:
+        return "two pair"
+
+    else:
+        pass
+
+def three_of_a_kind (rank):
+    for i in rank:
+        if rank[i] == 3:
+            return "three of a kind"
+
+    else:
+        pass
+
+def full_house (rank):
+    count_for_3 = 0
+    count_for_2 = 0
+
+    for i in rank:
+        if rank[i] == 3:
+            count_for_3 += 1
+        elif rank[i] >= 2:
+            count_for_2 += 1
+    if count_for_3 == count_for_2:
+        return "full house"
+
+def four_of_a_kind (rank):
+    for i in rank:
+        if rank[i] == 4:
+            return "four of a kind"
+    pass
+
+
+def one_pair (rank):
+    for i in rank:
+        if rank[i] == 2:
+            return "one pair"
+    pass
 
 
 
+def straight_flush (suit,rank):
+    check_straight = straight(rank)
+    check_flush = flush(suit)
+    if check_straight == "straight" and check_flush == "flush":
+        return "straight flush"
 
+    else:
+        pass
 
+"""def high_card(rank):
+    count = 0
+    for i in rank:
+        if i >= count:
+            count = i
+
+    return str(count)"""
 
 
 hand = [
