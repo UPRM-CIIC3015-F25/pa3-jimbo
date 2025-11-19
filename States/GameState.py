@@ -561,6 +561,7 @@ class GameState(State):
             sorted_rank = []
             for rank in suitOrder:
 
+                pass
         if sort_by == "suit":
             sorted_suit = []
 
@@ -790,7 +791,27 @@ class GameState(State):
         #       self.activated_jokers.add("joker card name")
         #   The last line ensures the Joker is visibly active and its effects are properly applied.
 
+        if "The Joker" in owned:
+            hand_mult += 4
+            self.activated_jokers.add("The Joker")
+
+        if "Micheal Myers" in owned:
+            hand_mult +=  random.randrange(0, 24)
+            self.activated_jokers.add("Micheal Myers")
+
+        if "Fibonacci" in owned:
+            for i in self.hand:
+                if i in [Rank.ACE, Rank.TWO, Rank.THREE, Rank.FIVE, Rank.EIGHT]:
+                    hand_mult += 8
+            self.activated_jokers.add("Fibonacci")
+
+        if "Gauntlet" in owned:
+            hand_mult += 1
+            # self.
+
+
         procrastinate = False
+
 
         # commit modified player multiplier and chips
         self.playerInfo.playerMultiplier = hand_mult

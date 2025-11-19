@@ -55,48 +55,48 @@ def flush (suit): #def that takes a dict of suits to see if its a flush or not
 
         else:
             pass
-
-def straight (rank):
-    new = []
-    new_if_high = []
-
-    original = 0
-    count = 0
-    for e in rank:
-        new.append (e)
 #
-    new.sort()
-    if 14 in new:
-        for i in new:
-            new_if_high.append (i)
-        new_if_high.pop()
-        new_if_high.insert(0, 1)
-        new_if_high.sort()
-
-    for i in new:
-        if count == 0:
-            count = i
-            original = i
-
-        elif i == count + 1:
-            count += 1
-
-    if count == original + 4:
-        return "straight"
-
-    else:
-        new_count = 0
-        new_original = 0
-
-        for i in new_if_high:
-            if new_count == 0:
-                new_count = i
-                new_original = i
-            elif i == new_count + 1:
-                new_count += 1
-
-        if new_count == new_original + 4:
-            return "straight"
+# def straight (rank):
+#     new = []
+#     new_if_high = []
+#
+#     original = 0
+#     count = 0
+#     for e in rank:
+#         new.append (e)
+# #
+#     new.sort()
+#     if 14 in new:
+#         for i in new:
+#             new_if_high.append (i)
+#         new_if_high.pop()
+#         new_if_high.insert(0, 1)
+#         new_if_high.sort()
+#
+#     for i in new:
+#         if count == 0:
+#             count = i
+#             original = i
+#
+#         elif i == count + 1:
+#             count += 1
+#
+#     if count == original + 4:
+#         return "straight"
+#
+#     else:
+#         new_count = 0
+#         new_original = 0
+#
+#         for i in new_if_high:
+#             if new_count == 0:
+#                 new_count = i
+#                 new_original = i
+#             elif i == new_count + 1:
+#                 new_count += 1
+#
+#         if new_count == new_original + 4:
+#             return "straight"
 
 def two_pair (rank):
     count = 0
