@@ -53,9 +53,6 @@ def flush (suit): #def that takes a dict of suits to see if its a flush or not
         if suit[i] == 5:
             return "flush"
 
-        else:
-            pass
-
 def straight (rank):
      unique_ranks = list(set(rank))
      unique_ranks = sorted(unique_ranks, key=lambda f: f.value)
@@ -110,16 +107,11 @@ def two_pair (rank):
     if count == 2:
         return "two pair"
 
-    else:
-        pass
 
 def three_of_a_kind (rank):
     for i in rank:
         if rank[i] == 3:
             return "three of a kind"
-
-    else:
-        pass
 
 def full_house (rank):
     count_for_3 = 0
@@ -137,14 +129,12 @@ def four_of_a_kind (rank):
     for i in rank:
         if rank[i] == 4:
             return "four of a kind"
-    pass
 
 
 def one_pair (rank):
     for i in rank:
         if rank[i] == 2:
             return "one pair"
-    pass
 
 
 
@@ -153,24 +143,3 @@ def straight_flush (suit,rank):
     check_flush = flush(suit)
     if check_straight == "straight" and check_flush == "flush":
         return "straight flush"
-
-    else:
-        pass
-
-"""def high_card(rank):
-    count = 0
-    for i in rank:
-        if i >= count:
-            count = i
-
-    return str(count)"""
-
-
-hand = [
-    Card("hearts", Rank.ACE),
-    Card("hearts", Rank.FIVE),
-    Card("hearts", Rank.FOUR),
-    Card("hearts", Rank.THREE),
-    Card("hearts", Rank.TWO)]
-
-print(evaluate_hand(hand))
