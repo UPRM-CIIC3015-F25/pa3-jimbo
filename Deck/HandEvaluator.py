@@ -63,35 +63,40 @@ def straight (rank):
      count = 0
 
 
-     #
-     #
-     # for i in unique_ranks:
-     #    if  count == 0:
-     #        count += i
-     #        original += i
-     #
-     #    elif i == count + 1:
-     #        count += 1
-     #
-     # if count == original + 4:
-     #       return "straight"
-     #
-     # else:
-     #     if 14 in unique_ranks:
-     #         unique_ranks.pop()
-     #         unique_ranks.insert(0, 1)
-     #
-     #         count = 0
-     #         original = 0
-     #         for i in unique_ranks:
-     #            if count == 0:
-     #                count = i
-     #                original = i
-     #            elif i == count + 1:
-     #                 count += 1
-     #
-     #     if count == original + 4:
-     #         return "straight"
+
+     for i in unique_ranks:
+        if  count == 0:
+            count += i.value
+            original += i.value
+
+        elif i.value == count + 1:
+            count += 1
+
+     if count == original + 4:
+           return "straight"
+
+     else:
+         if Rank.ACE in unique_ranks:
+             new_unique_ranks = []
+             for i in unique_ranks:
+                 new_unique_ranks.append(i.value)
+
+             new_unique_ranks.pop()
+             new_unique_ranks.insert(0, 1)
+             new_unique_ranks.sort()
+
+
+             count = 0
+             original = 0
+             for i in new_unique_ranks:
+                if count == 0:
+                    count = i
+                    original = i
+                elif i == count + 1:
+                     count += 1
+
+         if count == original + 4:
+             return "straight"
 
 
 
@@ -163,9 +168,9 @@ def straight_flush (suit,rank):
 
 hand = [
     Card("hearts", Rank.ACE),
-    Card("hearts", Rank.KING),
-    Card("hearts", Rank.QUEEN),
-    Card("hearts", Rank.JACK),
-    Card("hearts", Rank.TEN)]
+    Card("hearts", Rank.FIVE),
+    Card("hearts", Rank.FOUR),
+    Card("hearts", Rank.THREE),
+    Card("hearts", Rank.TWO)]
 
 print(evaluate_hand(hand))
