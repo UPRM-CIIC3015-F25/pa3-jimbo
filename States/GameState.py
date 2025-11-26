@@ -1,5 +1,7 @@
 import pygame
 import random
+
+from Cards.Jokers import Jokers
 from States.Menus.DebugState import DebugState
 from States.Core.StateClass import State
 from Cards.Card import Suit, Rank
@@ -790,6 +792,9 @@ class GameState(State):
         #       # Apply that Joker’s effect
         #       self.activated_jokers.add("joker card name")
         #   The last line ensures the Joker is visibly active and its effects are properly applied.
+        #"The Joker": 4, "Micheal Myers": 6, "Fibonacci": 5, "Gauntlet": 5, "Ogre": 5,
+        #            "Straw Hat": 5, "Hog Rider": 4, "? Block": 5, "Hogwarts": 6, '802': 6
+         #           }
 
         if "The Joker" in owned:
             hand_mult += 4
@@ -806,8 +811,28 @@ class GameState(State):
             self.activated_jokers.add("Fibonacci")
 
         if "Gauntlet" in owned:
-            hand_mult += 1
-            # self.
+            total_chips += 250
+            self.hand -= 2
+
+
+            self.activated_jokers.add("Gauntlet")
+
+        if "Ogre" in owned:
+            count = 0
+            for i in range(len(self.playerJokers)):
+                count += 1
+
+            hand_mult += (count * 3)
+
+            self.activated_jokers.add("Ogre")
+
+        if "Straw Hat" in owned:
+        #     +100 Chips then -5 chips for every hand already
+        # played this round
+
+
+
+
 
 
         procrastinate = False
