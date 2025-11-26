@@ -831,6 +831,31 @@ class GameState(State):
         # played this round
 
 
+        if "Hog Rider" in owned:
+            if hand_name == "Straight":
+                total_chips += 100
+
+        if "? Block" in owned:
+            if len(self.hand) <= 4:
+                total_chips += 4
+
+        if "Hogwarts" in owned:
+
+            for i in self.hand:
+                if i.rank == Rank.ACE:
+                    total_chips += 20
+                    hand_mult += 4
+
+        if "802" in owned:
+            if self.amountOfHands == 1:
+                total_chips * 2
+
+
+
+
+
+
+
 
 
 
