@@ -816,7 +816,7 @@ class GameState(State):
 
         if "Gauntlet" in owned:
             total_chips += 250
-            self.hand -= 2
+            self.hand = State.deckManager.dealCards(self.deck, 6)
 
 
             self.activated_jokers.add("Gauntlet")
@@ -833,7 +833,16 @@ class GameState(State):
         if "Straw Hat" in owned:
         #     +100 Chips then -5 chips for every hand already
         # played this round
+            hold_round = self.playerInfo.round
+            base_chips_joker_chips = 100
+            current_joker_chips = 100
 
+            if hold_round != self.playerInfo.round:
+                current_joker_chips = base_chips_joker_chips
+
+            hand_chips += current_joker_chips
+            current_joker_chips -= 5
+            self.activated_jokers.add("Straw Hat")
 
         if "Hog Rider" in owned:
             if hand_name == "Straight":
@@ -851,7 +860,7 @@ class GameState(State):
                     hand_mult += 4
 
         if "802" in owned:
-            if self.amountOfHands == 1:
+            if  self.playerInfo.amountOfHands == 1:
                 total_chips * 2
 
 

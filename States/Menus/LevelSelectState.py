@@ -1,8 +1,12 @@
 import pygame
+
+from Cards.Card import Rank
 from Deck.DeckManager import DeckManager
 from Levels.SubLevel import SubLevel
 from States.Core.StateClass import State
 from States.Core.PlayerInfo import PlayerInfo
+from States.GameState import GameState
+import random
 
 class LevelSelectState(State):
     def __init__(self, playerInfo: PlayerInfo = None, nextState: str = "", deckManager: DeckManager = None):
@@ -98,19 +102,18 @@ class LevelSelectState(State):
                 if boss_name == "The Needle":
                     self.playerInfo.amountOfHands = 1
 
-                elif boss_name == "The Mark":
-
                 elif boss_name == "The Manacle":
                     self.playerInfo.amountOfHands -= 1
-
-                elif boss_name == "The House":
-
-                elif boss_name == "The Hook":
 
 
                 elif boss_name == "The Water":
                     self.playerInfo.amountOfDiscards = 0
 
+                else:
+                    self.playerInfo.discardPerHand = 0
+
+                self.playerInfo.amountOfHands = 4
+                self.playerInfo.roundScore = 0
 
 
                 # Set target score for the new sublevel
