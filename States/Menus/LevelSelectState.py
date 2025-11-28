@@ -1,5 +1,6 @@
 import pygame
 from Deck.DeckManager import DeckManager
+from Levels.SubLevel import SubLevel
 from States.Core.StateClass import State
 from States.Core.PlayerInfo import PlayerInfo
 
@@ -91,7 +92,27 @@ class LevelSelectState(State):
                 #   Finally, make sure to reset the player’s round score to 0 at the end of this setup.
                 #   Avoid unnecessary repetition—use clear condition structure to make the logic readable.
                 self.playerInfo.roundScore = 0
-                
+
+                boss_name= lm.curSubLevel.bossName.boss.level
+
+                if boss_name == "The Needle":
+                    self.playerInfo.amountOfHands = 1
+
+                elif boss_name == "The Mark":
+
+                elif boss_name == "The Manacle":
+                    self.playerInfo.amountOfHands -= 1
+
+                elif boss_name == "The House":
+
+                elif boss_name == "The Hook":
+
+
+                elif boss_name == "The Water":
+                    self.playerInfo.amountOfDiscards = 0
+
+
+
                 # Set target score for the new sublevel
                 self.playerInfo.score = self.playerInfo.levelManager.curSubLevel.score
                 
@@ -115,7 +136,9 @@ class LevelSelectState(State):
         #   Each key should be the name of a boss (e.g., "The Mark", "The Needle", etc.), and each value should describe
         #   what unique restriction or ability that boss applies during the round.
         #   This dictionary will later be used to look up and apply special effects based on which boss is active.
-        boss_abilities = {
+        boss_abilities = {"The Mark": "Face down", "The Needle": "One hand", "The House": "First hand down",
+                          "The Hook": "Remove two cards in hand", "The Water": "start with zero discards",
+                          "The Manacle": "-1 hand size"
 
         }
 
