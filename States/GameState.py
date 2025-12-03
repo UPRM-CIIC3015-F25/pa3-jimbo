@@ -848,9 +848,12 @@ class GameState(State):
             if hand_name == "Straight":
                 total_chips += 100
 
+            self.activated_jokers.add("Hog Rider")
+
         if "? Block" in owned:
             if len(self.hand) <= 4:
                 total_chips += 4
+            self.activated_jokers.add("? Block")
 
         if "Hogwarts" in owned:
 
@@ -858,10 +861,13 @@ class GameState(State):
                 if i.rank == Rank.ACE:
                     total_chips += 20
                     hand_mult += 4
+            self.activated_jokers.add("Hogwarts")
 
         if "802" in owned:
             if  self.playerInfo.amountOfHands == 1:
                 total_chips * 2
+
+            self.activated_jokers.add("802")
 
 
 
@@ -872,13 +878,31 @@ class GameState(State):
         
         1) Faceless
         
-            if "faceless" in owned:
+            if "Faceless" in owned:
                 for i in self.hand:
                     if i.rank not in [Rank.KING, Rank.QUEEN, Rank.JACK]:
                     
                         self.total_chips += 20
                         hand_mult += 2
                         
+                        
+                self.activated_jokers.add("Faceless")
+                
+                
+                
+        2) Super Star
+        
+            if "Super Star" in owned:
+                if self.amountOfHands == 1:
+                total_chips * 2
+                hand_mult *= 2
+        
+        3) Enkephalin:
+            
+            if "Enkephalin" in owned:
+            
+                #try to make it interact directly with other jokers in owned to get different efects 
+                
                 
                     
                     
