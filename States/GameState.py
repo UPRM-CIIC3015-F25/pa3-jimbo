@@ -823,7 +823,7 @@ class GameState(State):
 
         if "Ogre" in owned:
             count = 0
-            for i in range(len(self.playerJokers)):
+            for i in range(len(owned)):
                 count += 1
 
             hand_mult += (count * 3)
@@ -876,7 +876,7 @@ class GameState(State):
         
         Joker ideas
         
-        1) Faceless
+        1) Faceless # when u have a non face card it activates and gives buffs
         
             if "Faceless" in owned:
                 for i in self.hand:
@@ -890,14 +890,15 @@ class GameState(State):
                 
                 
                 
-        2) Super Star
+        2) Super Star #when its the last hand it dobles your chips and mult 
         
             if "Super Star" in owned:
+            
                 if self.amountOfHands == 1:
                 total_chips * 2
                 hand_mult *= 2
         
-        3) Enkephalin:
+        3) Enkephalin: #A joker where whenever it has a card to synchronise with (Don quixote, Heathcliff, etc) it gets better
             
             if "Enkephalin" in owned:
                 if "Don Quixote in owned:
@@ -910,14 +911,29 @@ class GameState(State):
                 #try to make it interact directly with other jokers in owned to get different efects 
                 
                 
-        4) Don Quixote:
+        4) Don Quixote: #Joler where when paired up with enkephalin it make enkephalin better:
         
             if "Don Quixote" in owned:
-                hand_mult *= 10 
+                hand_mult *= 2
                     
-        5) Heathcliff:
-        
+        5) Doom Slayer #Joker where if you have it next to another joker it kills it (removes it from owned and loose it until you buy it again)
             
+            if "Doom Slayer" in owned:
+                if owned[-1] == "Doom Slayer":
+                    hand_mult *= 2
+                    total_chips += 5
+                    
+            else: 
+                for i in range(len(owned):
+                    if owned(i) == "Doom Slayer":
+                        owned.remove(i + 1)
+                        hand_mult *= 8
+                        total_chips += 20
+                        
+        6) ENA # Changes music bc why not
+            if "ENA" in owned:
+                
+                        
         
         '''
 
