@@ -866,6 +866,28 @@ class GameState(State):
 
 
 
+        '''
+        
+        Joker ideas
+        
+        1) Faceless
+        
+            if "faceless" in owned:
+                for i in self.hand:
+                    if i.rank not in [Rank.KING, Rank.QUEEN, Rank.JACK]:
+                    
+                        self.total_chips += 20
+                        hand_mult += 2
+                        
+                
+                    
+                    
+        
+        '''
+
+
+
+
 
 
 
