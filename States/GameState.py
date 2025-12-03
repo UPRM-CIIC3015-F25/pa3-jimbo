@@ -900,12 +900,24 @@ class GameState(State):
         3) Enkephalin:
             
             if "Enkephalin" in owned:
+                if "Don Quixote in owned:
+                    hand_mult *= 2
+                    
+            if "Heathcliff" in owned:
+                if "Heathcliff" in owned:
+                    
             
                 #try to make it interact directly with other jokers in owned to get different efects 
                 
                 
+        4) Don Quixote:
+        
+            if "Don Quixote" in owned:
+                hand_mult *= 10 
                     
-                    
+        5) Heathcliff:
+        
+            
         
         '''
 
