@@ -28,30 +28,30 @@ def evaluate_hand(hand: list[Card]):
 
 
 
-    if straight_flush(suit_dict, rank_dict) == "straight flush":
-        return "straight flush"
-    if four_of_a_kind(rank_dict) == "four of a kind":
-        return "four of a kind"
-    if full_house(rank_dict) == "full house":
-        return "full house"
-    if flush(suit_dict) == "flush":
-        return "flush"
-    if straight(rank_dict) == "straight":
-        return "straight"
-    if three_of_a_kind(rank_dict) == "three of a kind":
-        return "three of a kind"
-    if two_pair(rank_dict) == "two pair":
-        return "two pair"
-    if one_pair(rank_dict) == "one pair":
-        return "one pair"
+    if straight_flush(suit_dict, rank_dict) == "Straight Flush":
+        return "Straight Flush"
+    if four_of_a_kind(rank_dict) == "Four of a Kind":
+        return "Four of a Kind"
+    if full_house(rank_dict) == "Full House":
+        return "Full House"
+    if flush(suit_dict) == "Flush":
+        return "Flush"
+    if straight(rank_dict) == "Straight":
+        return "Straight"
+    if three_of_a_kind(rank_dict) == "Three of a Kind":
+        return "Three of a Kind"
+    if two_pair(rank_dict) == "Two Pair":
+        return "Two Pair"
+    if one_pair(rank_dict) == "One Pair":
+        return "One Pair"
     else:
-        return "high card"
+        return "High Card"
 
 def flush (suit): #def that takes a dict of suits to see if its a flush or not
 
     for i in suit:  # chacks for flush
         if suit[i] == 5:
-            return "flush"
+            return "Flush"
 
 def straight (rank):
      unique_ranks = list(set(rank))
@@ -70,7 +70,7 @@ def straight (rank):
             count += 1
 
      if count == original + 4:
-           return "straight"
+           return "Straight"
 
      else:
          if Rank.ACE in unique_ranks:
@@ -93,7 +93,7 @@ def straight (rank):
                      count += 1
 
          if count == original + 4:
-             return "straight"
+             return "Straight"
 
 
 
@@ -105,13 +105,13 @@ def two_pair (rank):
             count += 1
 
     if count == 2:
-        return "two pair"
+        return "Two Pair"
 
 
 def three_of_a_kind (rank):
     for i in rank:
         if rank[i] == 3:
-            return "three of a kind"
+            return "Three of a Kind"
 
 def full_house (rank):
     count_for_3 = 0
@@ -123,23 +123,23 @@ def full_house (rank):
         elif rank[i] >= 2:
             count_for_2 += 1
     if count_for_3 == count_for_2:
-        return "full house"
+        return "Full House"
 
 def four_of_a_kind (rank):
     for i in rank:
         if rank[i] == 4:
-            return "four of a kind"
+            return "Four of a Kind"
 
 
 def one_pair (rank):
     for i in rank:
         if rank[i] == 2:
-            return "one pair"
+            return "One Pair"
 
 
 
 def straight_flush (suit,rank):
     check_straight = straight(rank)
     check_flush = flush(suit)
-    if check_straight == "straight" and check_flush == "flush":
-        return "straight flush"
+    if check_straight == "Straight" and check_flush == "Flush":
+        return "Straight Flush"

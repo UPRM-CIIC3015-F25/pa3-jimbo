@@ -905,7 +905,7 @@ class GameState(State):
                     hand_mult *= 2
                     
             if "Heathcliff" in owned:
-                if "Heathcliff" in owned:
+                
                     
             
                 #try to make it interact directly with other jokers in owned to get different efects 
@@ -915,8 +915,26 @@ class GameState(State):
         
             if "Don Quixote" in owned:
                 hand_mult *= 2
+                
+                
+        5) Heathcliff
+        
+            if "Heathcliff" in owned:
+            if hand_name in ["two pair", "pair", "three pair"]
+                if hand_name == "two pair":
+                    total_chips += 10
+                    hand_mult += 1
+                
+                elif hand_name == "pair":
+                    total_chips += 20
+                    hand_mult += 2
                     
-        5) Doom Slayer #Joker where if you have it next to another joker it kills it (removes it from owned and loose it until you buy it again)
+                elif hand_name == "three pair":
+                
+                    total_chips += 40
+                    hand_mult += 4
+                    
+        6) Doom Slayer #Joker where if you have it next to another joker it kills it (removes it from owned and loose it until you buy it again)
             
             if "Doom Slayer" in owned:
                 if owned[-1] == "Doom Slayer":
@@ -930,10 +948,11 @@ class GameState(State):
                         hand_mult *= 8
                         total_chips += 20
                         
-        6) ENA # Changes music bc why not
+        7) ENA # Changes music bc why not
             if "ENA" in owned:
             #changes the base music depending if it is in owned or not 
             
+        
         
                 
                         
