@@ -932,6 +932,9 @@ class GameState(State):
                         
         6) ENA # Changes music bc why not
             if "ENA" in owned:
+            #changes the base music depending if it is in owned or not 
+            
+        
                 
                         
         
