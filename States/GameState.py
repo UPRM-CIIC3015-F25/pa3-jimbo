@@ -2,6 +2,7 @@ import pygame
 import random
 
 from Cards.Jokers import Jokers
+from Levels.SubLevel import Blind
 from States.Menus.DebugState import DebugState
 from States.Core.StateClass import State
 from Cards.Card import Suit, Rank
@@ -537,7 +538,32 @@ class GameState(State):
     #     - A clear base case to stop recursion when all parts are done
     #   Avoid any for/while loops — recursion alone must handle the repetition.
     def calculate_gold_reward(self, playerInfo, stage=0):
+        if stage == 0:
+
+            blind = playerInfo.levelManager.curSubLevel.blind
+
+            if blind == Blind.SMALL:
+                gold = 4
+            elif blind == Blind.BIG:
+                gold = 8
+            elif blind == Blind.BOSS:
+                gold = 10
+            else:
+                gold = 0
+
+            score = playerInfo.roundScore
+            target = playerInfo.score
+
+            overkill = ((score - target) / target) * 5
+            ultrakill = min(5, (max(0, overkill))) #shoutout my indie fans
+
+
+            return gold + self.calculate_gold_reward(playerInfo, ultrakill)
+
+        if stage <= 0:
             return 0
+
+        return 1 + self.calculate_gold_reward(playerInfo, stage - 1)
 
     def updateCards(self, posX, posY, cardsDict, cardsList, scale=1.5, spacing=90, baseYOffset=-20, leftShift=40):
         cardsDict.clear()
