@@ -121,8 +121,6 @@ class ShopState(State):
                     stats["multiplier"] += planet.multiplier
                     stats["level"] += planet.level
             return
-
-
     # ---------- Helpers ----------
     def _wrap_lines(self, text, font, max_width):
         words = text.split()
