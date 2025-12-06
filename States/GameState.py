@@ -26,6 +26,7 @@ class GameState(State):
     def __init__(self, nextState: str = "", player: PlayerInfo = None):
         super().__init__(nextState)
         # ----------------------------Deck and Hand initialization----------------------------
+        self.cardsdiscarded = 0
         self.playerInfo = player # playerInfo object
         self.deck = State.deckManager.shuffleDeck(State.deckManager.createDeck(self.playerInfo.levelManager.curSubLevel))
         self.hand = State.deckManager.dealCards(self.deck, 8)
@@ -1014,3 +1015,25 @@ class GameState(State):
     #   update the visual layout of the player's hand.
     def discardCards(self, removeFromHand: bool):
         self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
+
+        if not self.cardsSelectedList:
+            return None
+
+        card = self.cardsSelectedList[0]
+
+        if removeFromHand:
+            if card in self.hand:
+                self.hand.remove(card)
+                self.cardsdiscarded += 1
+
+                new_cards = State.deckManager.dealCards(self.deck, 1)
+                self.hand.extend(new_cards)
+
+        self.cardsSelectedList.pop(0)
+
+        if self.cardsSelectedRect:
+            self.cardsSelectedRect.popitem()
+
+        self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
+
+        return self.discardCards(removeFromHand)
