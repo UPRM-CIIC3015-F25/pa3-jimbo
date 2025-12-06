@@ -1,3 +1,5 @@
+from typing import List
+
 from Cards.Card import Card, Rank
 
 # TODO (TASK 3): Implement a function that evaluates a player's poker hand.
@@ -9,7 +11,7 @@ from Cards.Card import Card, Rank
 #   If both a straight and a flush occur in the same suit, return "Straight Flush". Otherwise, use the rank counts
 #   and flags to determine if the hand is: "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind",
 #   "Two Pair", "One Pair", or "High Card". Return a string with the correct hand type at the end.
-def evaluate_hand(hand: list[Card]):
+def evaluate_hand(hand: List[Card]):
     suit_dict = {}
     rank_dict = {}
     for i in hand:
