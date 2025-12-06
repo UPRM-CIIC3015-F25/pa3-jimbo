@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from Levels.SubLevel import Blind
+from Cards.Jokers import Jokers
 from States.Menus.DebugState import DebugState
 from States.Core.StateClass import State
 from Cards.Card import Suit, Rank
@@ -25,7 +25,6 @@ class GameState(State):
     def __init__(self, nextState: str = "", player: PlayerInfo = None):
         super().__init__(nextState)
         # ----------------------------Deck and Hand initialization----------------------------
-        self.cardsdiscarded = 0
         self.playerInfo = player # playerInfo object
         self.deck = State.deckManager.shuffleDeck(State.deckManager.createDeck(self.playerInfo.levelManager.curSubLevel))
         self.hand = State.deckManager.dealCards(self.deck, 8)
@@ -538,33 +537,7 @@ class GameState(State):
     #     - A clear base case to stop recursion when all parts are done
     #   Avoid any for/while loops — recursion alone must handle the repetition.
     def calculate_gold_reward(self, playerInfo, stage=0):
-        if stage == 0:
-
-            blind = playerInfo.levelManager.curSubLevel.blind #current blind???????
-
-            if blind == Blind.SMALL:
-                gold = 4
-            elif blind == Blind.BIG:
-                gold = 8
-            elif blind == Blind.BOSS:
-                gold = 10
-            else:
-                gold = 0
-
-            score = playerInfo.roundScore
-            target = playerInfo.score
-
-            overkill = ((score - target) / target) * 5
-            ultrakill = min(5, (max(0, overkill))) #shoutout my indie fans
-
-
-            return gold + self.calculate_gold_reward(playerInfo, ultrakill)
-
-        if stage <= 0: #should work idek
             return 0
-
-        return 1 + self.calculate_gold_reward(playerInfo, stage - 1)
-
 
     def updateCards(self, posX, posY, cardsDict, cardsList, scale=1.5, spacing=90, baseYOffset=-20, leftShift=40):
         cardsDict.clear()
@@ -585,6 +558,20 @@ class GameState(State):
     def SortCards(self, sort_by: str = "suit"):
         suitOrder = [Suit.HEARTS, Suit.CLUBS, Suit.DIAMONDS, Suit.SPADES]         # Define the order of suits
         self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def checkHoverCards(self):
         mousePos = pygame.mouse.get_pos()
@@ -809,8 +796,162 @@ class GameState(State):
         #       # Apply that Joker’s effect
         #       self.activated_jokers.add("joker card name")
         #   The last line ensures the Joker is visibly active and its effects are properly applied.
+        #"The Joker": 4, "Micheal Myers": 6, "Fibonacci": 5, "Gauntlet": 5, "Ogre": 5,
+        #            "Straw Hat": 5, "Hog Rider": 4, "? Block": 5, "Hogwarts": 6, '802': 6
+         #           }
+
+        if "The Joker" in owned:
+            hand_mult += 4
+            self.activated_jokers.add("The Joker")
+
+        if "Micheal Myers" in owned:
+            hand_mult +=  random.randrange(0, 24)
+            self.activated_jokers.add("Micheal Myers")
+
+        if "Fibonacci" in owned:
+            for i in self.hand:
+                if i in [Rank.ACE, Rank.TWO, Rank.THREE, Rank.FIVE, Rank.EIGHT]:
+                    hand_mult += 8
+            self.activated_jokers.add("Fibonacci")
+
+        if "Gauntlet" in owned:
+            total_chips += 250
+            self.hand = State.deckManager.dealCards(self.deck, 6)
+
+
+            self.activated_jokers.add("Gauntlet")
+
+        if "Ogre" in owned:
+            count = 0
+            for i in range(len(owned)):
+                count += 1
+
+            hand_mult += (count * 3)
+
+            self.activated_jokers.add("Ogre")
+
+        if "Straw Hat" in owned:
+        #     +100 Chips then -5 chips for every hand already
+        # played this round
+            hold_round = self.playerInfo.round
+            base_chips_joker_chips = 100
+            current_joker_chips = 100
+
+            if hold_round != self.playerInfo.round:
+                current_joker_chips = base_chips_joker_chips
+
+            hand_chips += current_joker_chips
+            current_joker_chips -= 5
+            self.activated_jokers.add("Straw Hat")
+
+        if "Hog Rider" in owned:
+            if hand_name == "Straight":
+                total_chips += 100
+
+            self.activated_jokers.add("Hog Rider")
+
+        if "? Block" in owned:
+            if len(self.hand) <= 4:
+                total_chips += 4
+            self.activated_jokers.add("? Block")
+
+        if "Hogwarts" in owned:
+
+            for i in self.hand:
+                if i.rank == Rank.ACE:
+                    total_chips += 20
+                    hand_mult += 4
+            self.activated_jokers.add("Hogwarts")
+
+        if "802" in owned:
+            if  self.playerInfo.amountOfHands == 1:
+                total_chips * 2
+
+            self.activated_jokers.add("802")
+
+
+
+
+        '''
+        
+        Joker ideas
+        
+        1) Faceless # when u have a non face card it activates and gives buffs
+        
+            if "Faceless" in owned:
+                for i in self.hand:
+                    if i.rank not in [Rank.KING, Rank.QUEEN, Rank.JACK]:
+                    
+                        self.total_chips += 20
+                        hand_mult += 2
+                        
+                        
+                self.activated_jokers.add("Faceless")
+                
+                
+                
+        2) Super Star #when its the last hand it dobles your chips and mult 
+        
+            if "Super Star" in owned:
+            
+                if self.amountOfHands == 1:
+                total_chips * 2
+                hand_mult *= 2
+        
+        3) Enkephalin: #A joker where whenever it has a card to synchronise with (Don quixote, Heathcliff, etc) it gets better
+            
+            if "Enkephalin" in owned:
+                if "Don Quixote in owned:
+                    hand_mult *= 2
+                    
+            if "Heathcliff" in owned:
+                if "Heathcliff" in owned:
+                    
+            
+                #try to make it interact directly with other jokers in owned to get different efects 
+                
+                
+        4) Don Quixote: #Joler where when paired up with enkephalin it make enkephalin better:
+        
+            if "Don Quixote" in owned:
+                hand_mult *= 2
+                    
+        5) Doom Slayer #Joker where if you have it next to another joker it kills it (removes it from owned and loose it until you buy it again)
+            
+            if "Doom Slayer" in owned:
+                if owned[-1] == "Doom Slayer":
+                    hand_mult *= 2
+                    total_chips += 5
+                    
+            else: 
+                for i in range(len(owned):
+                    if owned(i) == "Doom Slayer":
+                        owned.remove(i + 1)
+                        hand_mult *= 8
+                        total_chips += 20
+                        
+        6) ENA # Changes music bc why not
+            if "ENA" in owned:
+            #changes the base music depending if it is in owned or not 
+            
+        
+                
+                        
+        
+        '''
+
+
+
+
+
+
+
+
+
+
 
         procrastinate = False
+
 
         # commit modified player multiplier and chips
         self.playerInfo.playerMultiplier = hand_mult

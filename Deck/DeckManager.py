@@ -13,7 +13,8 @@ class DeckManager:
         # === Joker names in order (left-to-right, top-to-bottom) ===
         self.jokerNames = [
             "Fibonacci", "Michael Myers", "? Block", "Hogwarts", "StrawHat",
-            "802", "Ogre", "Hog Rider", "Gauntlet", "The Joker"
+            "802", "Ogre", "Hog Rider", "Gauntlet", "The Joker", "ENA", "Doom Slayer",
+            "Heathcliff", "Don Quixote", "Enkephalin", "Super Star", "Faceless"
         ]
     # ---------- Helpers ----------
     def _scaleToHeightIntegerish(self, surf: pygame.Surface, targetH: int) -> pygame.Surface:
@@ -164,7 +165,9 @@ class DeckManager:
         deckJokers = []
 
         priceMap = {"The Joker": 4, "Micheal Myers": 6, "Fibonacci": 5, "Gauntlet": 5, "Ogre": 5,
-                    "Straw Hat": 5, "Hog Rider": 4, "? Block": 5, "Hogwarts": 6, '802': 6
+                    "Straw Hat": 5, "Hog Rider": 4, "? Block": 5, "Hogwarts": 6, '802': 6 , "Faceless": 6,
+                    "Super Star": 3, "Enkephalin": 1, "Don Quixote": 6, "Doom Slayer": 8, "Heathcliff": 3, "ENA": 1,
+                    "Baki": 6, "Caco Demon": 1
                     }
 
         for name, image in jokerImages.items():
