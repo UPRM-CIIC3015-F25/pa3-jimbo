@@ -556,13 +556,43 @@ class GameState(State):
     def SortCards(self, sort_by: str = "suit"):
         suitOrder = [Suit.HEARTS, Suit.CLUBS, Suit.DIAMONDS, Suit.SPADES]         # Define the order of suits
         self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
+        if sort_by == 'suit':
+            hearts = []
+            clubs = []
+            diamonds = []
+            spades = []
+            for card in self.hand:
+                if card.suit == Suit.HEARTS:
+                    hearts.append(card)
+                if card.suit == Suit.CLUBS:
+                    clubs.append(card)
+                if card.suit == Suit.DIAMONDS:
+                    diamonds.append(card)
+                if card.suit == Suit.SPADES:
+                    spades.append(card)
+            self.hand = hearts + clubs + diamonds + spades
+            self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
+
+        else:
+            ranks = [
+                Rank.ACE, Rank.KING, Rank.QUEEN, Rank.JACK,
+                Rank.TEN, Rank.NINE, Rank.EIGHT, Rank.SEVEN,
+                Rank.SIX, Rank.FIVE, Rank.FOUR, Rank.THREE, Rank.TWO
+            ]
+            res = []
+            for r in ranks:
+                for card in self.hand:
+                    if card.rank == r:
+                        res.append(card)
+            self.hand = res
+            self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
 
     def checkHoverCards(self):
         mousePos = pygame.mouse.get_pos()
         for card, rect in self.cards.items():
             if rect.collidepoint(mousePos):
                 break
-    
+
     def drawCardTooltip(self):
         mousePos = pygame.mouse.get_pos()
         for card, rect in self.cards.items():
