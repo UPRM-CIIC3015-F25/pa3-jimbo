@@ -113,6 +113,7 @@ class ShopState(State):
                     stats["level"] += planet.level
             return
 
+
     # ---------- Helpers ----------
     def _wrap_lines(self, text, font, max_width):
         words = text.split()

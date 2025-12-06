@@ -39,3 +39,4 @@ PLANETS = {
     'Neptune' : PlanetCard('Neptune', 'Increases Four of a Kind hand value by +4 multiplier and +40 chips', 3, 40, 4),
     'Sun'     : PlanetCard('Sun', 'Increases all hands value by +2 multiplier and +30 chips', 12, 30, 2),
 }
+
