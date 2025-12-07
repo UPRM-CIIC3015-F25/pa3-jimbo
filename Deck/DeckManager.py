@@ -103,7 +103,7 @@ class DeckManager:
         sheetW, sheetH = sheet.get_width(), sheet.get_height()
 
         # expected layout is 5 columns x 2 rows — compute cell size from sheet
-        cols, rows = 5, 2
+        cols, rows = 6, 3
         cellW = max(1, sheetW // cols)
         cellH = max(1, sheetH // rows)
 

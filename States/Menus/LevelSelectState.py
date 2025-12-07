@@ -135,7 +135,7 @@ class LevelSelectState(State):
         self.sublevelCards = []
 
         # Dict of boss with their abilities
-        # TODO (TASK 9.1) - Define a dictionary called `boss_abilities` that maps each Boss Blind’s name to its special effect.
+        # TODO ( TASK 9.1) - Define a dictionary called `boss_abilities` that maps each Boss Blind’s name to its special effect.
         #   Each key should be the name of a boss (e.g., "The Mark", "The Needle", etc.), and each value should describe
         #   what unique restriction or ability that boss applies during the round.
         #   This dictionary will later be used to look up and apply special effects based on which boss is active.
