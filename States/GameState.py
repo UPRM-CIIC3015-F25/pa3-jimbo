@@ -590,18 +590,31 @@ class GameState(State):
         suitOrder = [Suit.HEARTS, Suit.CLUBS, Suit.DIAMONDS, Suit.SPADES]         # Define the order of suits
         self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
         
+        if sort_by == "suit":
+            hearts, clubs, diamonds, spades = [], [], [], []
 
+            for card in self.hand:
+                if card.suit == Suit.HEARTS:
+                    hearts.append(card)
+                elif card.suit == Suit.CLUBS:
+                    clubs.append(card)
+                elif card.suit == Suit.DIAMONDS:
+                    diamonds.append(card)
+                elif card.suit == Suit.SPADES:
+                    spades.append(card)
+            self.hand = hearts + clubs + diamonds +spades
 
+        else:
+            ranks, sorted_hand = [Rank.ACE, Rank.KING, Rank.QUEEN, Rank.JACK, Rank.TEN, Rank.NINE,Rank.EIGHT, Rank.SEVEN,
+                     Rank.SIX, Rank.FIVE, Rank.FOUR, Rank.THREE, Rank.TWO], []
 
+            for r in ranks:
+                for card in self.hand:
+                    if card.rank == r:
+                        sorted_hand.append(card)
 
-
-
-
-
-
-
-
-
+            self.hand = sorted_hand
+        self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
 
 
     def checkHoverCards(self):
