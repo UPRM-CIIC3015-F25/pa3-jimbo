@@ -1,8 +1,11 @@
+from ctypes.wintypes import SMALL_RECT
+
 import pygame
 import random
 
 from Cards.Jokers import Jokers
-from Levels.SubLevel import Blind
+from Levels.SubLevel import Blind, SubLevel
+from Levels.LevelManager import LevelManager
 from States.Menus.DebugState import DebugState
 from States.Core.StateClass import State
 from Cards.Card import Suit, Rank
@@ -538,33 +541,34 @@ class GameState(State):
     #     - Recursive calculation of the overkill bonus (based on how much score exceeds the target)
     #     - A clear base case to stop recursion when all parts are done
     #   Avoid any for/while loops — recursion alone must handle the repetition.
-    def calculate_gold_reward(self, playerInfo, stage=0):
+    def calculate_gold_reward(self, playerInfo, stage=0, total=0):
+        if stage == 2:
+            return round(total)
+
         if stage == 0:
+            blind = self.playerInfo.levelManager.curSubLevel
 
-            blind = playerInfo.levelManager.curSubLevel.blind
-
-            if blind == Blind.SMALL:
+            if blind.blind == Blind.SMALL:
                 gold = 4
-            elif blind == Blind.BIG:
+
+            elif blind.blind == Blind.BIG:
                 gold = 8
-            elif blind == Blind.BOSS:
+
+            elif blind.blind == Blind.BOSS:
                 gold = 10
+
             else:
-                gold = 0
+                gold = 1
 
-            score = playerInfo.roundScore
-            target = playerInfo.score
+            return self.calculate_gold_reward(playerInfo,stage=1, total = total + gold) #i hated doing this
 
+        if stage == 1:
+            score = self.playerInfo.roundScore
+            target = self.playerInfo.score
             overkill = ((score - target) / target) * 5
-            ultrakill = min(5, (max(0, overkill))) #shoutout my indie fans
+            ultrakill = min(5, (max(0, overkill)))
 
-
-            return gold + self.calculate_gold_reward(playerInfo, ultrakill)
-
-        if stage <= 0:
-            return 0
-
-        return 1 + self.calculate_gold_reward(playerInfo, stage - 1)
+            return self.calculate_gold_reward(playerInfo,stage=2, total = total + ultrakill)
 
     def updateCards(self, posX, posY, cardsDict, cardsList, scale=1.5, spacing=90, baseYOffset=-20, leftShift=40):
         cardsDict.clear()
