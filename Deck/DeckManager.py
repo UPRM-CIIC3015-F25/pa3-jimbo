@@ -14,7 +14,7 @@ class DeckManager:
         self.jokerNames = [
             "Fibonacci", "Michael Myers", "? Block", "Hogwarts", "StrawHat",
             "802", "Ogre", "Hog Rider", "Gauntlet", "The Joker", "ENA", "Doom Slayer",
-            "Heathcliff", "Don Quixote", "Enkephalin", "Super Star", "Faceless"
+            "Heathcliff", "Don Quixote", "Enkephalin", "Super Star", "Faceless", "Baki", "Caco Demon"
         ]
     # ---------- Helpers ----------
     def _scaleToHeightIntegerish(self, surf: pygame.Surface, targetH: int) -> pygame.Surface:
