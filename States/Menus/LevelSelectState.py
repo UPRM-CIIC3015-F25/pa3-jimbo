@@ -95,24 +95,29 @@ class LevelSelectState(State):
                 #   on which boss is active.
                 #   Finally, make sure to reset the player’s round score to 0 at the end of this setup.
                 #   Avoid unnecessary repetition—use clear condition structure to make the logic readable.
-                self.playerInfo.roundScore = 0
 
-                boss_name= lm.curSubLevel.bossName.boss.level
 
-                if boss_name == "The Needle":
+                if  nxt.bossLevel  == "The Needle":
                     self.playerInfo.amountOfHands = 1
 
-                elif boss_name == "The Manacle":
-                    self.playerInfo.amountOfHands -= 1
+                else:
+                    self.playerInfo.amountOfHands = 4
 
 
-                elif boss_name == "The Water":
+
+                if nxt.bossLevel  == "The Manacle":
+                    self.playerInfo.amountOfHands = self.playerInfo.amountOfHands -1
+
+                else:
+                    self.playerInfo.amountOfDiscards = 4
+
+
+                if nxt.bossLevel  == "The Water":
                     self.playerInfo.amountOfDiscards = 0
 
                 else:
-                    self.playerInfo.discardPerHand = 0
+                    self.playerInfo.amountOfDiscards = 4
 
-                self.playerInfo.amountOfHands = 4
                 self.playerInfo.roundScore = 0
 
 
