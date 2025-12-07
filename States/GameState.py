@@ -899,73 +899,83 @@ class GameState(State):
 
 
 
-        '''
-        
-        Joker ideas
-        
-        1) Faceless # when u have a non face card it activates and gives buffs
-        
-            if "Faceless" in owned:
-                for i in self.hand:
-                    if i.rank not in [Rank.KING, Rank.QUEEN, Rank.JACK]:
-                    
-                        self.total_chips += 20
-                        hand_mult += 2
-                        
-                        
-                self.activated_jokers.add("Faceless")
-                
-                
-                
-        2) Super Star #when its the last hand it dobles your chips and mult 
-        
-            if "Super Star" in owned:
-            
-                if self.amountOfHands == 1:
+
+        if "Faceless" in owned:
+            for i in self.hand:
+                if i.rank not in [Rank.KING, Rank.QUEEN, Rank.JACK]:
+
+                    total_chips += 20
+                    hand_mult += 2
+
+
+            self.activated_jokers.add("Faceless")
+
+
+
+
+        if "Super Star" in owned:
+
+            if self.playerInfo.amountOfHands == 1:
                 total_chips * 2
                 hand_mult *= 2
-        
-        3) Enkephalin: #A joker where whenever it has a card to synchronise with (Don quixote, Heathcliff, etc) it gets better
-            
-            if "Enkephalin" in owned:
-                if "Don Quixote in owned:
-                    hand_mult *= 2
-                    
-            if "Heathcliff" in owned:
-                if "Heathcliff" in owned:
-                    
-            
-                #try to make it interact directly with other jokers in owned to get different efects 
-                
-                
-        4) Don Quixote: #Joler where when paired up with enkephalin it make enkephalin better:
-        
+
+            self.activated_jokers.add("Super Star")
+
+        if "Enkephalin" in owned:
             if "Don Quixote" in owned:
                 hand_mult *= 2
-                    
-        5) Doom Slayer #Joker where if you have it next to another joker it kills it (removes it from owned and loose it until you buy it again)
-            
-            if "Doom Slayer" in owned:
-                if owned[-1] == "Doom Slayer":
-                    hand_mult *= 2
-                    total_chips += 5
-                    
-            else: 
-                for i in range(len(owned):
-                    if owned(i) == "Doom Slayer":
-                        owned.remove(i + 1)
-                        hand_mult *= 8
-                        total_chips += 20
-                        
-        6) ENA # Changes music bc why not
-            if "ENA" in owned:
-            #changes the base music depending if it is in owned or not 
-            
+
+            if "Heathcliff" in owned:
+
+                total_chips *=2
+
+            self.activated_jokers.add("Enkephalin")
+
+
+        if "Heathcliff" in owned:
+            if hand_name in ["Two Pair", "One par"]:
+
+                self.activated_jokers.add("Heathcliff")
+
+
+        if "Don Quixote" in owned:
+            hand_mult *= 2
+
+            self.activated_jokers.add("Don Quixote")
+
+
+        if "Doom Slayer" in owned:
+            if self.playerInfo.amountOfHands == 2:
+                hand_mult *= 8
+                total_chips += 20
+            else:
+                hand_mult *= 2
+                total_chips += 5
+
+            self.activated_jokers.add("Doom Slayer")
+
+
+
+        if "Caco Demon" in owned:
+            hand_mult -= 2
+
+            self.activated_jokers.add("Caco Demon")
+
+        if "Baki" in owned:
+            if self.playerInfo.amountOfDiscards == 0:
+                hand_mult += 5
+
+            self.activated_jokers.add("Baki")
+
+        #
+        # if "ENA" in owned:
+        # #changes the base music depending if it is in owned or not
+        #
+        #     self.activated_jokers.add("ENA")
+
         
                 
                         
-        
-        '''
 
 
 

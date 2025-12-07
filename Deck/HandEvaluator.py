@@ -63,15 +63,17 @@ def four_of_a_kind(rank):
 
 
 def full_house(rank):
+
     count_for_3 = 0
     count_for_2 = 0
 
     for i in rank:
         if rank[i] == 3:
             count_for_3 += 1
-        elif rank[i] >= 2:
+        elif rank[i] == 2:
             count_for_2 += 1
-    if count_for_3 == count_for_2:
+
+    if count_for_3 == 1 and count_for_2 == 1:
         return "Full House"
 
 
