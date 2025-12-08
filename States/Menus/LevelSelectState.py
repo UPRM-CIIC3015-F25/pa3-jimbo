@@ -1,7 +1,12 @@
 import pygame
+
+from Cards.Card import Rank
 from Deck.DeckManager import DeckManager
+from Levels.SubLevel import SubLevel
 from States.Core.StateClass import State
 from States.Core.PlayerInfo import PlayerInfo
+from States.GameState import GameState
+import random
 
 class LevelSelectState(State):
     def __init__(self, playerInfo: PlayerInfo = None, nextState: str = "", deckManager: DeckManager = None):
@@ -90,8 +95,32 @@ class LevelSelectState(State):
                 #   on which boss is active.
                 #   Finally, make sure to reset the player’s round score to 0 at the end of this setup.
                 #   Avoid unnecessary repetition—use clear condition structure to make the logic readable.
+
+
+                if  nxt.bossLevel  == "The Needle":
+                    self.playerInfo.amountOfHands = 1
+
+                else:
+                    self.playerInfo.amountOfHands = 4
+
+
+
+                if nxt.bossLevel  == "The Manacle":
+                    self.playerInfo.amountOfHands = self.playerInfo.amountOfHands -1
+
+                else:
+                    self.playerInfo.amountOfDiscards = 4
+
+
+                if nxt.bossLevel  == "The Water":
+                    self.playerInfo.amountOfDiscards = 0
+
+                else:
+                    self.playerInfo.amountOfDiscards = 4
+
                 self.playerInfo.roundScore = 0
-                
+
+
                 # Set target score for the new sublevel
                 self.playerInfo.score = self.playerInfo.levelManager.curSubLevel.score
                 
@@ -111,11 +140,13 @@ class LevelSelectState(State):
         self.sublevelCards = []
 
         # Dict of boss with their abilities
-        # TODO (TASK 9.1) - Define a dictionary called `boss_abilities` that maps each Boss Blind’s name to its special effect.
+        # TODO ( TASK 9.1) - Define a dictionary called `boss_abilities` that maps each Boss Blind’s name to its special effect.
         #   Each key should be the name of a boss (e.g., "The Mark", "The Needle", etc.), and each value should describe
         #   what unique restriction or ability that boss applies during the round.
         #   This dictionary will later be used to look up and apply special effects based on which boss is active.
-        boss_abilities = {
+        boss_abilities = {"The Mark": "Face down", "The Needle": "One hand", "The House": "First hand down",
+                          "The Hook": "Remove two cards in hand", "The Water": "start with zero discards",
+                          "The Manacle": "-1 hand size"
 
         }
 

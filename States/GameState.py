@@ -1,7 +1,12 @@
+from ctypes.wintypes import SMALL_RECT
+from random import choice
+
 import pygame
 import random
 
 from Cards.Jokers import Jokers
+from Levels.SubLevel import Blind, SubLevel
+from Levels.LevelManager import LevelManager
 from States.Menus.DebugState import DebugState
 from States.Core.StateClass import State
 from Cards.Card import Suit, Rank
@@ -25,6 +30,7 @@ class GameState(State):
     def __init__(self, nextState: str = "", player: PlayerInfo = None):
         super().__init__(nextState)
         # ----------------------------Deck and Hand initialization----------------------------
+        self.cardsdiscarded = 0
         self.playerInfo = player # playerInfo object
         self.deck = State.deckManager.shuffleDeck(State.deckManager.createDeck(self.playerInfo.levelManager.curSubLevel))
         self.hand = State.deckManager.dealCards(self.deck, 8)
@@ -138,6 +144,17 @@ class GameState(State):
             "? Block": "If the played hand used exactly 4 Cards, add +4 chips.",
             "Hogwarts": "Each Ace played grants +4 multiplier and +20 chips.",
             "802": "If this is the last hand of the round, double the final gain.",
+            "ENA": "Changes the music :) .",
+            "Doom Slayer": "Brings doom to balatro (gives you chips and mult)",
+            "Heathcliff": "If hand is One Pair or Two Pair the joker gives different chips and mult.",
+            "Don Quixote": "multiplies your mult by 4",
+            "Enkephalin": "it does nothing?",
+            "Super Star": "doubles your second to last hand",
+            "Faceless": "Adds chips and mult if there are no face cards in the played hand",
+            "Baki": "When u have zero discards it gives 5 mult",
+            "Caco Demon": "Gives you a debuff",
+            "Gregor": "Gives you a debuff but multiplies your mult",
+            "Hornet": "Multiplies your chips by 2"
         }
         return desc_map.get(joker_obj.name, "No description available.")
 
@@ -536,8 +553,34 @@ class GameState(State):
     #     - Recursive calculation of the overkill bonus (based on how much score exceeds the target)
     #     - A clear base case to stop recursion when all parts are done
     #   Avoid any for/while loops — recursion alone must handle the repetition.
-    def calculate_gold_reward(self, playerInfo, stage=0):
-            return 0
+    def calculate_gold_reward(self, playerInfo, stage=0, total=0):
+        if stage == 2:
+            return round(total)
+
+        if stage == 0:
+            blind = self.playerInfo.levelManager.curSubLevel
+
+            if blind.blind == Blind.SMALL:
+                gold = 4
+
+            elif blind.blind == Blind.BIG:
+                gold = 8
+
+            elif blind.blind == Blind.BOSS:
+                gold = 10
+
+            else:
+                gold = 1
+
+            return self.calculate_gold_reward(playerInfo,stage=1, total = total + gold) #i hated doing this
+
+        if stage == 1:
+            score = self.playerInfo.roundScore
+            target = self.playerInfo.score
+            overkill = ((score - target) / target) * 5
+            ultrakill = min(5, (max(0, overkill)))
+
+            return self.calculate_gold_reward(playerInfo,stage=2, total = total + ultrakill)
 
     def updateCards(self, posX, posY, cardsDict, cardsList, scale=1.5, spacing=90, baseYOffset=-20, leftShift=40):
         cardsDict.clear()
@@ -557,6 +600,32 @@ class GameState(State):
     #   until the entire hand is ordered correctly.
     def SortCards(self, sort_by: str = "suit"):
         suitOrder = [Suit.HEARTS, Suit.CLUBS, Suit.DIAMONDS, Suit.SPADES]         # Define the order of suits
+        self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
+        
+        if sort_by == "suit":
+            hearts, clubs, diamonds, spades = [], [], [], []
+
+            for card in self.hand:
+                if card.suit == Suit.HEARTS:
+                    hearts.append(card)
+                elif card.suit == Suit.CLUBS:
+                    clubs.append(card)
+                elif card.suit == Suit.DIAMONDS:
+                    diamonds.append(card)
+                elif card.suit == Suit.SPADES:
+                    spades.append(card)
+            self.hand = hearts + clubs + diamonds +spades
+
+        else:
+            ranks, sorted_hand = [Rank.ACE, Rank.KING, Rank.QUEEN, Rank.JACK, Rank.TEN, Rank.NINE,Rank.EIGHT, Rank.SEVEN,
+                     Rank.SIX, Rank.FIVE, Rank.FOUR, Rank.THREE, Rank.TWO], []
+
+            for r in ranks:
+                for card in self.hand:
+                    if card.rank == r:
+                        sorted_hand.append(card)
+
+            self.hand = sorted_hand
         self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
 
 
@@ -791,44 +860,53 @@ class GameState(State):
             hand_mult += 4
             self.activated_jokers.add("The Joker")
 
-        if "Micheal Myers" in owned:
+        if "Michael Myers" in owned:
             hand_mult +=  random.randrange(0, 24)
-            self.activated_jokers.add("Micheal Myers")
+            self.activated_jokers.add("Michael Myers")
 
         if "Fibonacci" in owned:
             for i in self.hand:
-                if i in [Rank.ACE, Rank.TWO, Rank.THREE, Rank.FIVE, Rank.EIGHT]:
+                if i.rank in [Rank.ACE, Rank.TWO, Rank.THREE, Rank.FIVE, Rank.EIGHT]:
                     hand_mult += 8
             self.activated_jokers.add("Fibonacci")
 
         if "Gauntlet" in owned:
             total_chips += 250
-            self.hand -= 2
+            self.hand = State.deckManager.dealCards(self.deck, 6)
 
 
             self.activated_jokers.add("Gauntlet")
 
         if "Ogre" in owned:
-            count = 0
-            for i in range(len(self.playerJokers)):
-                count += 1
-
-            hand_mult += (count * 3)
+            count = len(owned)
+            hand_mult += count * 3
 
             self.activated_jokers.add("Ogre")
 
         if "Straw Hat" in owned:
         #     +100 Chips then -5 chips for every hand already
         # played this round
+            hold_round = self.playerInfo.round
+            base_chips_joker_chips = 100
+            current_joker_chips = 100
 
+            if hold_round != self.playerInfo.round:
+                current_joker_chips = base_chips_joker_chips
+
+            hand_chips += current_joker_chips
+            current_joker_chips -= 5
+            self.activated_jokers.add("Straw Hat")
 
         if "Hog Rider" in owned:
             if hand_name == "Straight":
                 total_chips += 100
 
+            self.activated_jokers.add("Hog Rider")
+
         if "? Block" in owned:
-            if len(self.hand) <= 4:
+            if len(self.hand) == 4:
                 total_chips += 4
+            self.activated_jokers.add("? Block")
 
         if "Hogwarts" in owned:
 
@@ -836,10 +914,124 @@ class GameState(State):
                 if i.rank == Rank.ACE:
                     total_chips += 20
                     hand_mult += 4
+            self.activated_jokers.add("Hogwarts")
 
         if "802" in owned:
-            if self.amountOfHands == 1:
-                total_chips * 2
+            if  self.playerInfo.amountOfHands == 1:
+                total_chips *= 2
+
+            self.activated_jokers.add("802")
+
+
+
+
+
+        if "Faceless" in owned:
+            for i in self.hand:
+                if i.rank not in [Rank.KING, Rank.QUEEN, Rank.JACK]:
+
+                    total_chips += 20
+                    hand_mult += 2
+
+
+            self.activated_jokers.add("Faceless")
+
+
+
+
+        if "Super Star" in owned:
+
+            if self.playerInfo.amountOfHands == 1:
+                total_chips *= 2
+                hand_mult *= 2
+
+            self.activated_jokers.add("Super Star")
+
+        if "Enkephalin" in owned:
+            if "Don Quixote" in owned:
+                hand_mult *= 2
+
+            if "Heathcliff" in owned:
+
+                total_chips *=2
+
+            if "Gregor" in owned:
+                total_chips += 50
+
+
+
+            self.activated_jokers.add("Enkephalin")
+
+
+        if "Heathcliff" in owned:
+            if hand_name in ["Two Pair", "One Pair"]:
+
+
+                total_chips += 20
+                hand_mult += 2
+
+                self.activated_jokers.add("Heathcliff")
+
+
+        if "Don Quixote" in owned:
+            hand_mult *= 2
+
+            self.activated_jokers.add("Don Quixote")
+
+
+        if "Doom Slayer" in owned:
+            if self.playerInfo.amountOfHands >= 2:
+                hand_mult *= 8
+                total_chips += 20
+            else:
+                hand_mult *= 2
+                total_chips += 5
+
+            self.activated_jokers.add("Doom Slayer")
+
+
+
+        if "Caco Demon" in owned:
+            hand_mult -= 2
+
+            self.activated_jokers.add("Caco Demon")
+
+        if "Baki" in owned:
+            if self.playerInfo.amountOfDiscards == 0:
+                hand_mult += 5
+
+            self.activated_jokers.add("Baki")
+
+        if "Hornet" in owned:
+            random_choice = random.choice([True, False])
+
+            if random_choice == True:
+                total_chips *= 2
+
+
+
+            self.activated_jokers.add("Hornet")
+
+        if "Gregor" in owned:
+            total_chips -= 50
+            hand_mult *= 3
+            self.activated_jokers.add("Gregor")
+
+        #
+
+        if "ENA" in owned and "ENA" not in self.activated_jokers:
+            pygame.mixer.music.stop()
+
+            pygame.mixer.music.load("Graphics/Sounds/Anemonia.mp3")
+            pygame.mixer.music.set_volume(0.3)
+            pygame.mixer.music.play(-1)
+
+            self.activated_jokers.add("ENA")
+
+        
+
+
+                        
 
 
 
@@ -889,3 +1081,25 @@ class GameState(State):
     #   update the visual layout of the player's hand.
     def discardCards(self, removeFromHand: bool):
         self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
+
+        if not self.cardsSelectedList:
+            return None
+
+        card = self.cardsSelectedList[0]
+
+        if removeFromHand:
+            if card in self.hand:
+                self.hand.remove(card)
+                self.cardsdiscarded += 1
+
+                new_cards = State.deckManager.dealCards(self.deck, 1)
+                self.hand.extend(new_cards)
+
+        self.cardsSelectedList.pop(0)
+
+        if self.cardsSelectedRect:
+            self.cardsSelectedRect.popitem()
+
+        self.updateCards(400, 520, self.cards, self.hand, scale=1.2)
+
+        return self.discardCards(removeFromHand)

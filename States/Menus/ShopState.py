@@ -89,6 +89,17 @@ class ShopState(State):
             "? Block": "If the played hand used exactly 4 cards, add +4 chips.",
             "Hogwarts": "Each Ace played grants +4 multiplier and +20 chips.",
             "802": "If this is the last hand of the round, double the final gain.",
+            "ENA": "Changes the music :) .",
+            "Doom Slayer": "Brings doom to balatro (gives you chips and mult)",
+            "Heathcliff": "If hand is One Pair or Two Pair the joker gives different chips and mult.",
+            "Don Quixote": "multiplies your mult by 4",
+            "Enkephalin": "it does nothing?",
+            "Super Star": "doubles your second to last hand",
+            "Faceless": "Adds chips and mult if there are no face cards in the played hand",
+            "Baki": "When u have zero discards it gives 5 mult",
+            "Caco Demon": "Gives you a debuff",
+            "Gregor": "Gives you a debuff but multiplies your mult",
+            "Hornet": "Multiplies your chips by 2"
         }
         
         return desc_map.get(getattr(joker_obj, 'name', ''), "No description available.")
@@ -98,8 +109,20 @@ class ShopState(State):
     #   containing its "chips", "multiplier", and "level" fields.
     #   Remember: the Sun upgrades all hands, while other planets upgrade only their specific one.
     def activatePlanet(self, planet):
-        keys = HAND_SCORES.keys()
-
+        if planet.name == "Sun":
+            for stats in HAND_SCORES.values():
+                stats["chips"] += planet.chips
+                stats["multiplier"] += planet.mult
+                stats["level"] += planet.level
+            return
+        else:
+            for hand in HAND_SCORES:
+                if hand in planet.description:
+                    stats = HAND_SCORES[hand]
+                    stats["chips"] += planet.chips
+                    stats["multiplier"] += planet.mult
+                    stats["level"] += planet.level
+            return
     # ---------- Helpers ----------
     def _wrap_lines(self, text, font, max_width):
         words = text.split()
