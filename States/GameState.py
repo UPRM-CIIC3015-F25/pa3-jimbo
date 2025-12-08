@@ -958,6 +958,11 @@ class GameState(State):
 
                 total_chips *=2
 
+            if "Gregor" in owned:
+                total_chips += 50
+
+
+
             self.activated_jokers.add("Enkephalin")
 
 
@@ -974,7 +979,7 @@ class GameState(State):
 
 
         if "Doom Slayer" in owned:
-            if self.playerInfo.amountOfHands == 2:
+            if self.playerInfo.amountOfHands >= 2:
                 hand_mult *= 8
                 total_chips += 20
             else:
@@ -1011,10 +1016,13 @@ class GameState(State):
             self.activated_jokers.add("Gregor")
 
         #
-        # if "ENA" in owned:
-        # #changes the base music depending if it is in owned or not
-        #
-        #     self.activated_jokers.add("ENA")
+        if "ENA" in owned:
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load("Graphics/Sounds/Anemonia.mp3")
+            pygame.mixer.music.set_volume(0.3)
+            pygame.mixer.music.play(-1)
+
+            self.activated_jokers.add("ENA")
 
         
 
