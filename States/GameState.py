@@ -1,4 +1,5 @@
 from ctypes.wintypes import SMALL_RECT
+from random import choice
 
 import pygame
 import random
@@ -143,6 +144,17 @@ class GameState(State):
             "? Block": "If the played hand used exactly 4 Cards, add +4 chips.",
             "Hogwarts": "Each Ace played grants +4 multiplier and +20 chips.",
             "802": "If this is the last hand of the round, double the final gain.",
+            "ENA": "Changes the music :) .",
+            "Doom Slayer": "Brings doom to balatro (gives you chips and mult)",
+            "Heathcliff": "If hand is One Pair or Two Pair the joker gives different chips and mult.",
+            "Don Quixote": "multiplies your mult by 4",
+            "Enkephalin": "it does nothing?",
+            "Super Star": "doubles your second to last hand",
+            "Faceless": "Adds chips and mult if there are no face cards in the played hand",
+            "Baki": "When u have zero discards it gives 5 mult",
+            "Caco Demon": "Gives you a debuff",
+            "Gregor": "Gives you a debuff but multiplies your mult",
+            "Hornet": "Multiplies your chips by 2"
         }
         return desc_map.get(joker_obj.name, "No description available.")
 
@@ -984,6 +996,20 @@ class GameState(State):
 
             self.activated_jokers.add("Baki")
 
+        if "Hornet" in owned:
+            random_choice = random.choice([True, False])
+
+            if random_choice == True:
+                total_chips *= 2
+
+
+            self.activated_jokers.add("Hornet")
+
+        if "Gregor" in owned:
+            total_chips -= 50
+            hand_mult *= 3
+            self.activated_jokers.add("Gregor")
+
         #
         # if "ENA" in owned:
         # #changes the base music depending if it is in owned or not
@@ -991,7 +1017,8 @@ class GameState(State):
         #     self.activated_jokers.add("ENA")
 
         
-                
+
+
                         
 
 

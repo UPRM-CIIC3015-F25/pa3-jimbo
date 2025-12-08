@@ -97,7 +97,9 @@ class ShopState(State):
             "Super Star": "doubles your second to last hand",
             "Faceless": "Adds chips and mult if there are no face cards in the played hand",
             "Baki": "When u have zero discards it gives 5 mult",
-            "Caco Demon": "Gives you a debuff"
+            "Caco Demon": "Gives you a debuff",
+            "Gregor": "Gives you a debuff but multiplies your mult",
+            "Hornet": "Multiplies your chips by 2"
         }
         
         return desc_map.get(getattr(joker_obj, 'name', ''), "No description available.")
