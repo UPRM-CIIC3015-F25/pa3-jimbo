@@ -5,6 +5,7 @@ class PlanetCard:
         self.price = price
         self.chips = chips
         self.mult = mult
+        self.level = 1
         self.image = image
         self.isActive = isActive
 
