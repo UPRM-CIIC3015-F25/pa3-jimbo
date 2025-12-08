@@ -164,7 +164,7 @@ class DeckManager:
         jokerImages = self.loadJokerImages()
         deckJokers = []
 
-        priceMap = {"The Joker": 4, "Micheal Myers": 6, "Fibonacci": 5, "Gauntlet": 5, "Ogre": 5,
+        priceMap = {"The Joker": 4, "Michael Myers": 6, "Fibonacci": 5, "Gauntlet": 5, "Ogre": 5,
                     "Straw Hat": 5, "Hog Rider": 4, "? Block": 5, "Hogwarts": 6, '802': 6 , "Faceless": 6,
                     "Super Star": 3, "Enkephalin": 2, "Don Quixote": 6, "Doom Slayer": 8, "Heathcliff": 3, "ENA": 2,
                     "Baki": 6, "Caco Demon": 2, "Hornet": 5 , "Gregor": 6

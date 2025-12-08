@@ -860,13 +860,13 @@ class GameState(State):
             hand_mult += 4
             self.activated_jokers.add("The Joker")
 
-        if "Micheal Myers" in owned:
+        if "Michael Myers" in owned:
             hand_mult +=  random.randrange(0, 24)
-            self.activated_jokers.add("Micheal Myers")
+            self.activated_jokers.add("Michael Myers")
 
         if "Fibonacci" in owned:
             for i in self.hand:
-                if i in [Rank.ACE, Rank.TWO, Rank.THREE, Rank.FIVE, Rank.EIGHT]:
+                if i.rank in [Rank.ACE, Rank.TWO, Rank.THREE, Rank.FIVE, Rank.EIGHT]:
                     hand_mult += 8
             self.activated_jokers.add("Fibonacci")
 
@@ -878,11 +878,8 @@ class GameState(State):
             self.activated_jokers.add("Gauntlet")
 
         if "Ogre" in owned:
-            count = 0
-            for i in range(len(owned)):
-                count += 1
-
-            hand_mult += (count * 3)
+            count = len(owned)
+            hand_mult += count * 3
 
             self.activated_jokers.add("Ogre")
 
@@ -907,7 +904,7 @@ class GameState(State):
             self.activated_jokers.add("Hog Rider")
 
         if "? Block" in owned:
-            if len(self.hand) <= 4:
+            if len(self.hand) == 4:
                 total_chips += 4
             self.activated_jokers.add("? Block")
 
@@ -921,7 +918,7 @@ class GameState(State):
 
         if "802" in owned:
             if  self.playerInfo.amountOfHands == 1:
-                total_chips * 2
+                total_chips *= 2
 
             self.activated_jokers.add("802")
 
@@ -945,7 +942,7 @@ class GameState(State):
         if "Super Star" in owned:
 
             if self.playerInfo.amountOfHands == 1:
-                total_chips * 2
+                total_chips *= 2
                 hand_mult *= 2
 
             self.activated_jokers.add("Super Star")
@@ -967,7 +964,11 @@ class GameState(State):
 
 
         if "Heathcliff" in owned:
-            if hand_name in ["Two Pair", "One par"]:
+            if hand_name in ["Two Pair", "One Pair"]:
+
+
+                total_chips += 20
+                hand_mult += 2
 
                 self.activated_jokers.add("Heathcliff")
 
@@ -1008,6 +1009,7 @@ class GameState(State):
                 total_chips *= 2
 
 
+
             self.activated_jokers.add("Hornet")
 
         if "Gregor" in owned:
@@ -1016,8 +1018,10 @@ class GameState(State):
             self.activated_jokers.add("Gregor")
 
         #
-        if "ENA" in owned:
+
+        if "ENA" in owned and "ENA" not in self.activated_jokers:
             pygame.mixer.music.stop()
+
             pygame.mixer.music.load("Graphics/Sounds/Anemonia.mp3")
             pygame.mixer.music.set_volume(0.3)
             pygame.mixer.music.play(-1)
