@@ -1028,7 +1028,6 @@ class GameState(State):
 
             self.activated_jokers.add("ENA")
 
-        
 
 
                         
