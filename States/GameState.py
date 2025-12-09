@@ -852,9 +852,7 @@ class GameState(State):
         #       # Apply that Joker’s effect
         #       self.activated_jokers.add("joker card name")
         #   The last line ensures the Joker is visibly active and its effects are properly applied.
-        #"The Joker": 4, "Micheal Myers": 6, "Fibonacci": 5, "Gauntlet": 5, "Ogre": 5,
-        #            "Straw Hat": 5, "Hog Rider": 4, "? Block": 5, "Hogwarts": 6, '802': 6
-         #           }
+
 
         if "The Joker" in owned:
             hand_mult += 4
