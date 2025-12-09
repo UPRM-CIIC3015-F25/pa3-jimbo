@@ -30,6 +30,9 @@ class GameState(State):
     def __init__(self, nextState: str = "", player: PlayerInfo = None):
         super().__init__(nextState)
         # ----------------------------Deck and Hand initialization----------------------------
+        # self.last_round_straw_hat = -1
+        # self.current_straw_hat_chips = 100
+
         self.cardsdiscarded = 0
         self.playerInfo = player # playerInfo object
         self.deck = State.deckManager.shuffleDeck(State.deckManager.createDeck(self.playerInfo.levelManager.curSubLevel))
@@ -852,10 +855,6 @@ class GameState(State):
         #       # Apply that Joker’s effect
         #       self.activated_jokers.add("joker card name")
         #   The last line ensures the Joker is visibly active and its effects are properly applied.
-        #"The Joker": 4, "Micheal Myers": 6, "Fibonacci": 5, "Gauntlet": 5, "Ogre": 5,
-        #            "Straw Hat": 5, "Hog Rider": 4, "? Block": 5, "Hogwarts": 6, '802': 6
-         #           }
-
         if "The Joker" in owned:
             hand_mult += 4
             self.activated_jokers.add("The Joker")
@@ -868,45 +867,33 @@ class GameState(State):
             for i in self.hand:
                 if i.rank in [Rank.ACE, Rank.TWO, Rank.THREE, Rank.FIVE, Rank.EIGHT]:
                     hand_mult += 8
-            self.activated_jokers.add("Fibonacci")
+                    self.activated_jokers.add("Fibonacci")
 
         if "Gauntlet" in owned:
             total_chips += 250
             self.hand = State.deckManager.dealCards(self.deck, 6)
-
-
             self.activated_jokers.add("Gauntlet")
 
         if "Ogre" in owned:
             count = len(owned)
             hand_mult += count * 3
-
             self.activated_jokers.add("Ogre")
 
-        if "Straw Hat" in owned:
-        #     +100 Chips then -5 chips for every hand already
-        # played this round
-            hold_round = self.playerInfo.round
-            base_chips_joker_chips = 100
-            current_joker_chips = 100
-
-            if hold_round != self.playerInfo.round:
-                current_joker_chips = base_chips_joker_chips
-
-            hand_chips += current_joker_chips
-            current_joker_chips -= 5
-            self.activated_jokers.add("Straw Hat")
+        if "StrawHat" in owned:
+            hands_played = max(0, len(self.playedHandNameList) - 1)
+            bonus = max(0, 100 - (5 * hands_played))
+            total_chips += bonus
+            self.activated_jokers.add("StrawHat")
 
         if "Hog Rider" in owned:
             if hand_name == "Straight":
                 total_chips += 100
-
-            self.activated_jokers.add("Hog Rider")
+                self.activated_jokers.add("Hog Rider")
 
         if "? Block" in owned:
             if len(self.hand) == 4:
                 total_chips += 4
-            self.activated_jokers.add("? Block")
+                self.activated_jokers.add("? Block")
 
         if "Hogwarts" in owned:
 
@@ -914,17 +901,12 @@ class GameState(State):
                 if i.rank == Rank.ACE:
                     total_chips += 20
                     hand_mult += 4
-            self.activated_jokers.add("Hogwarts")
+                    self.activated_jokers.add("Hogwarts")
 
         if "802" in owned:
             if  self.playerInfo.amountOfHands == 1:
                 total_chips *= 2
-
-            self.activated_jokers.add("802")
-
-
-
-
+                self.activated_jokers.add("802")
 
         if "Faceless" in owned:
             for i in self.hand:
@@ -932,50 +914,38 @@ class GameState(State):
 
                     total_chips += 20
                     hand_mult += 2
+                    self.activated_jokers.add("Faceless")
 
+        # if "Super Star" in owned:
+        #
+        #     if self.playerInfo.amountOfHands == 1:
+        #         total_chips *= 2
+        #         hand_mult *= 2
+        #
+        #     self.activated_jokers.add("Super Star")
 
-            self.activated_jokers.add("Faceless")
-
-
-
-
-        if "Super Star" in owned:
-
-            if self.playerInfo.amountOfHands == 1:
-                total_chips *= 2
-                hand_mult *= 2
-
-            self.activated_jokers.add("Super Star")
-
-        if "Enkephalin" in owned:
-            if "Don Quixote" in owned:
-                hand_mult *= 2
-
-            if "Heathcliff" in owned:
-
-                total_chips *=2
-
-            if "Gregor" in owned:
-                total_chips += 50
-
-
-
-            self.activated_jokers.add("Enkephalin")
-
-
-        if "Heathcliff" in owned:
-            if hand_name in ["Two Pair", "One Pair"]:
-
-
-                total_chips += 20
-                hand_mult += 2
-
-                self.activated_jokers.add("Heathcliff")
-
+        # if "Enkephalin" in owned:
+        #     if "Don Quixote" in owned:
+        #         hand_mult *= 2
+        #
+        #     if "Heathcliff" in owned:
+        #
+        #         total_chips *=2
+        #
+        #     if "Gregor" in owned:
+        #         total_chips += 50
+        #     self.activated_jokers.add("Enkephalin")
+        # if "Heathcliff" in owned:
+        #     if hand_name in ["Two Pair", "One Pair"]:
+        #
+        #
+        #         total_chips += 20
+        #         hand_mult += 2
+        #
+        #         self.activated_jokers.add("Heathcliff")
 
         if "Don Quixote" in owned:
             hand_mult *= 2
-
             self.activated_jokers.add("Don Quixote")
 
 
@@ -983,65 +953,44 @@ class GameState(State):
             if self.playerInfo.amountOfHands >= 2:
                 hand_mult *= 8
                 total_chips += 20
+                self.activated_jokers.add("Doom Slayer")
             else:
                 hand_mult *= 2
                 total_chips += 5
+                self.activated_jokers.add("Doom Slayer")
 
-            self.activated_jokers.add("Doom Slayer")
+        # if "Caco Demon" in owned:
+        #     hand_mult -= 2
+        #
+        #     self.activated_jokers.add("Caco Demon")
 
-
-
-        if "Caco Demon" in owned:
-            hand_mult -= 2
-
-            self.activated_jokers.add("Caco Demon")
-
-        if "Baki" in owned:
-            if self.playerInfo.amountOfDiscards == 0:
-                hand_mult += 5
-
-            self.activated_jokers.add("Baki")
+        # if "Baki" in owned:
+        #     if self.playerInfo.amountOfDiscards == 0:
+        #         hand_mult += 5
+        #         self.activated_jokers.add("Baki")
 
         if "Hornet" in owned:
             random_choice = random.choice([True, False])
 
             if random_choice == True:
                 total_chips *= 2
-
-
-
-            self.activated_jokers.add("Hornet")
+                self.activated_jokers.add("Hornet")
 
         if "Gregor" in owned:
-            total_chips -= 50
+            total_chips -= 30
             hand_mult *= 3
             self.activated_jokers.add("Gregor")
 
         #
 
-        if "ENA" in owned and "ENA" not in self.activated_jokers:
-            pygame.mixer.music.stop()
-
-            pygame.mixer.music.load("Graphics/Sounds/Anemonia.mp3")
-            pygame.mixer.music.set_volume(0.3)
-            pygame.mixer.music.play(-1)
-
-            self.activated_jokers.add("ENA")
-
-        
-
-
-                        
-
-
-
-
-
-
-
-
-
-
+        # if "ENA" in owned and "ENA" not in self.activated_jokers:
+        #     pygame.mixer.music.stop()
+        #
+        #     pygame.mixer.music.load("Graphics/Sounds/Anemonia.mp3")
+        #     pygame.mixer.music.set_volume(0.3)
+        #     pygame.mixer.music.play(-1)
+        #
+        #     self.activated_jokers.add("ENA")
 
         procrastinate = False
 

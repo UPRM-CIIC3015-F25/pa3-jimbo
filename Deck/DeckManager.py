@@ -13,8 +13,13 @@ class DeckManager:
         # === Joker names in order (left-to-right, top-to-bottom) ===
         self.jokerNames = [
             "Fibonacci", "Michael Myers", "? Block", "Hogwarts", "StrawHat", "Faceless", "Baki",
-            "802", "Ogre", "Hog Rider", "Gauntlet", "The Joker", "Caco Demon", "Doom Slayer",
-            "Super Star", "Heathcliff", "Don Quixote", "Enkephalin", "ENA", "Hornet", "Gregor"
+            "802", "Ogre", "Hog Rider", "Gauntlet", "The Joker",
+            # "Caco Demon",
+            "Doom Slayer",
+            # "Super Star", "Heathcliff",
+            "Don Quixote",
+            # "Enkephalin", #"ENA",
+             "Hornet", "Gregor"
         ]
     # ---------- Helpers ----------
     def _scaleToHeightIntegerish(self, surf: pygame.Surface, targetH: int) -> pygame.Surface:
@@ -99,11 +104,11 @@ class DeckManager:
         uniformly to the target height. Automatically adjusts slicing
         to prevent out-of-bounds errors.
         """
-        sheet = pygame.image.load('Graphics/Cards/Joker_Sprites.png').convert_alpha()
+        sheet = pygame.image.load('Graphics/Cards/Unscrunched_Joker_Sprite.png').convert_alpha()
         sheetW, sheetH = sheet.get_width(), sheet.get_height()
 
         # expected layout is 5 columns x 2 rows — compute cell size from sheet
-        cols, rows = 7, 3
+        cols, rows = 5, 3
         cellW = max(1, sheetW // cols)
         cellH = max(1, sheetH // rows)
 
@@ -165,9 +170,8 @@ class DeckManager:
         deckJokers = []
 
         priceMap = {"The Joker": 4, "Michael Myers": 6, "Fibonacci": 5, "Gauntlet": 5, "Ogre": 5,
-                    "Straw Hat": 5, "Hog Rider": 4, "? Block": 5, "Hogwarts": 6, '802': 6 , "Faceless": 6,
-                    "Super Star": 3, "Enkephalin": 2, "Don Quixote": 6, "Doom Slayer": 8, "Heathcliff": 3, "ENA": 2,
-                    "Baki": 6, "Caco Demon": 2, "Hornet": 5 , "Gregor": 6
+                    "StrawHat": 5, "Hog Rider": 4, "? Block": 5, "Hogwarts": 6, '802': 6 , "Faceless": 6,
+                    "Don Quixote": 6, "Doom Slayer": 8, "Hornet": 5 , "Gregor": 6
                     }
 
         for name, image in jokerImages.items():
